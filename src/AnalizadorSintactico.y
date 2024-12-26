@@ -7,7 +7,7 @@
 %union{
     char  id[255];
     char* string;
-    int   numerico;
+    float numerico;
     char  operador;
     exp   tExp;
 

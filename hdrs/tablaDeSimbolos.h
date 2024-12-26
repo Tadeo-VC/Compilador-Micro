@@ -6,10 +6,19 @@
 enum tipoDeDato {NUMERICO = 0, CADENA = 1, ENTRADAVACIA = 2};
 
 typedef struct {
-    int valorReducido;
+    float valor;
     char* cadena;
     enum tipoDeDato tipo;
 } exp;
+
+// Tabla De Simbolos
+typedef struct {
+    char identificador[255];
+    int esVariable; // bool
+    exp valor;
+} TS;
+
+// Listas
 
 typedef struct {
     exp expresion;
@@ -21,21 +30,26 @@ typedef struct {
     nodoID *sgteIdentificador;
 } nodoID; // FIFO
 
-// Rutinas Semanticas
+// - - - - - Rutinas Semanticas
 
-void declararConstante(char identificador[255]);
-void declararVariable(char *tipo, char identificador[255]);
+// Declaraciones y Asignacion
+void declararVariableInt(char identificador[255]);
+void declararConstanteInt(char identificador[255]);
+void declararVariableString(char identificador[255]);
+void declararConstanteString(char identificador[255]);
 void asignarValorAIdentificador(char identificador[255], exp expresion);
 
+// Entrada / Salida
 void escribir(nodoExp *expresiones);
 void leer(nodoID *identificadores);
 
-exp asignarNumericoAExpresion(exp expresionAritmetica);
+// Expresiones
 exp asignarCadenaAExpresion(char *cadena);
 exp reducirExpresion(exp primaria, char operador, exp expresionAritmetica);
-exp reducirPrimaria(exp primaria);
-exp asignarValorAPrimaria(int valor);
+exp asignarValorAPrimaria(float valor);
 
-// Otras funciones de la tabla 
+// Otras 
+exp crearExpresionNumerica(float valor);
+exp valorDeIdentificador(char identificador[255]);
 
 #endif 
