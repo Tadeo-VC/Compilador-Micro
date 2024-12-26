@@ -3,7 +3,7 @@
 
 #define TAMANIO_TS 100
 
-enum tipoDeDato {NUMERICO = 0, CADENA = 1, ENTRADAVACIA = 2};
+enum tipoDeDato {INT = 0, STRING = 1, ENTRADAVACIA = 2};
 
 typedef struct {
     float valor;
@@ -19,7 +19,6 @@ typedef struct {
 } TS;
 
 // Listas
-
 typedef struct {
     exp expresion;
     nodoExp sgteExpresion;
@@ -33,10 +32,8 @@ typedef struct {
 // - - - - - Rutinas Semanticas
 
 // Declaraciones y Asignacion
-void declararVariableInt(char identificador[255]);
-void declararConstanteInt(char identificador[255]);
-void declararVariableString(char identificador[255]);
-void declararConstanteString(char identificador[255]);
+int declararVariable(enum tipoDeDato tipo, char identificador[255]); // retorna la posicion del identificador para facilitar la declaracion de constante
+void declararConstante(int posicionDelIdentificador);
 void asignarValorAIdentificador(char identificador[255], exp expresion);
 
 // Entrada / Salida
@@ -49,6 +46,9 @@ exp reducirExpresion(exp primaria, char operador, exp expresionAritmetica);
 exp asignarValorAPrimaria(float valor);
 
 // Otras 
+void inicializarTablaDeSimbolos();
+int posicionVacia();
+int posicionDelIdentificador(char identificador[255]);
 exp crearExpresionNumerica(float valor);
 exp valorDeIdentificador(char identificador[255]);
 

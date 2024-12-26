@@ -8,12 +8,14 @@
     char  id[255];
     char* string;
     float numerico;
+    int   posicion;
     char  operador;
     exp   tExp;
 
-%type <id>       IDENTIFICADOR
+%type <id>       IDENTIFICADOR 
 %type <string>   LITERALCADENA
 %type <numerico> CONSTANTENUMERICA expresionAritmetica
+%type <posicion> declaracionInt declaracionString // las declaraciones pasan la posicion del identificador para volverlo constante
 %type <operador> '+' '-'
 %type <tExp>     expresion expresionAritmetica primaria
 
@@ -35,11 +37,14 @@ sentencia: declaracion ';'
 
 // Declaraciones y Asignacion
 declaracion:    
-           | INT IDENTIFICADOR              {declararVariableInt($2);}             
-           | CONST INT IDENTIFICADOR        {declararConstanteInt($3);} 
-           | STRING IDENTIFICADOR           {declararVariableString($2);}          
-           | CONST STRING IDENTIFICADOR     {declararConstanteString($3);}
+           | declaracionInt           
+           | CONST declaracionInt       {declararConstante($2);} 
+           | declaracionString        
+           | CONST declaracionString    {declararConstante($2);}
 ;
+declaracionInt: INT IDENTIFICADOR       {$$ = declararVariable(0, $2);}  // 0 = INT, retorna la posicion del identificador
+;
+declaracionString: STRING IDENTIFICADOR {$$ = declararVariable(1, $2);}  // 0 = STRING, retorna la posicion del identificador
 
 // Asignaciones
 asignacion: IDENTIFICADOR '=:' expresion    {asignarValorAIdentificador($1, $3);} 
