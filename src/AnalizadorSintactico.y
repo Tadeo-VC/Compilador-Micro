@@ -27,12 +27,12 @@ objetivo:
 ;
 programa: INICIO listaDeSentencias FIN
 ;
-listaDeSentencias: sentencia listaDeSentencias 
-                 | sentencia 
+listaDeSentencias: sentencia ';' listaDeSentencias 
+                 | sentencia ';'
 ;
-sentencia: declaracion ';'
-         | asignacion ';'
-         | entradaSalida ';'
+sentencia: declaracion 
+         | asignacion 
+         | entradaSalida 
 ; 
 
 // Declaraciones y Asignacion
@@ -55,14 +55,14 @@ entradaSalida: ESCRIBIR '(' listaDeExpresiones ')'  {escribir($3);} // printear 
              | LEER '(' listaDeIdentificadores ')'  {leer($3);}     // asignar valor de la expresion reducida ingresada por teclado a cada variable
 ;
 
-// 
+// Listas y Expresiones
 
-listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores    {$$ = queue($$, $1);}    
-                      | IDENTIFICADOR                               {$$ = queue($$, $1);}
+listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores    {printf("%s", $1);;}    
+                      | IDENTIFICADOR                               {printf("%s", $1);}
 ;
 
-listaDeExpresiones: expresion ',' listaDeExpresiones    {$$ = queue($$, $1);}    
-                  | expresion                           {$$ = queue($$, $1);}
+listaDeExpresiones: expresion ',' listaDeExpresiones    {imprimirExpresion($1);}    
+                  | expresion                           {imprimirExpresion($1);}
 ;
 expresion: expresionAritmetica  {$$ = $1;}                            // de acuerdo al tipo que le llegue se le asigna el valor y el tipo a la expresion 
          | LITERALCADENA        {$$ = asignarCadenaAExpresion($1);}   //

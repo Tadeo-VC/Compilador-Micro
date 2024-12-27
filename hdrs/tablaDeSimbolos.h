@@ -39,6 +39,8 @@ void asignarValorAIdentificador(char identificador[255], exp expresion);
 // Entrada / Salida
 void escribir(nodoExp *expresiones);
 void leer(nodoID *identificadores);
+void imprimirExpresion(exp expresion);
+void imprimirIdentificador(char identificador[255]);
 
 // Expresiones
 exp asignarCadenaAExpresion(char *cadena);
@@ -47,7 +49,7 @@ exp asignarValorAPrimaria(float valor);
 
 // Otras 
 void inicializarTablaDeSimbolos();
-int posicionVacia();
+int posicionVacia(char identificador[255]);
 int posicionDelIdentificador(char identificador[255]);
 exp crearExpresionNumerica(float valor);
 exp valorDeIdentificador(char identificador[255]);

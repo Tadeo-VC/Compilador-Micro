@@ -44,6 +44,17 @@ void asignarValorAIdentificador(char identificador[255], exp expresion)
 
 void escribir(nodoExp *expresiones){}
 void leer(nodoID *identificadores){}
+void imprimirExpresion(exp expresion)
+{
+    if(expresion.tipo == INT)
+    {
+        printf("%f", expresion.valor);
+    }
+    if(expresion.tipo == STRING)
+    {
+        printf("%s", expresion.cadena);
+    }
+}
 
 // Expresiones
 
