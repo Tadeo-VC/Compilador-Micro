@@ -40,7 +40,6 @@ void asignarValorAIdentificador(char identificador[255], exp expresion);
 void escribir(nodoExp *expresiones);
 void leer(nodoID *identificadores);
 void imprimirExpresion(exp expresion);
-void imprimirIdentificador(char identificador[255]);
 
 // Expresiones
 exp asignarCadenaAExpresion(char *cadena);
