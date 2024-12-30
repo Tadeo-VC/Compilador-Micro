@@ -2,15 +2,15 @@ TARGET = Compilador
 
 #make Compilador
 $(TARGET) : AnalizadorSintactico AnalizadorLexico
-	gcc -o $(TARGET)  AnalizadorSintactico.tab.c lex.yy.c
+	gcc -o $(TARGET)  src/AnalizadorSintactico.tab.c src/lex.yy.c
 
-AnalizadorSintactico: AnalizadorSintactico.y
-	bison -dv AnalizadorSintactico.y
+AnalizadorSintactico: 
+	bison -dv src/AnalizadorSintactico.y
 
-AnalizadorLexico: AnalizadorLexico.l
-	flex -l AnalizadorLexico.l
+AnalizadorLexico: 
+	flex -l src/AnalizadorLexico.l
 
 
 #make clear
 clear:
-	rm -f $(TARGET)  lex.yy.c AnalizadorSintactico.output AnalizadorSintactico.output AnalizadorSintactico.tab.c AnalizadorSintactico.tab.h
+	rm -f $(TARGET)  lex.yy.c src/AnalizadorSintactico.output src/AnalizadorSintactico.output src/AnalizadorSintactico.tab.c src/AnalizadorSintactico.tab.h
