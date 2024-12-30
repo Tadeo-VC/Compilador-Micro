@@ -1,5 +1,7 @@
 %{
     #include "../hdrs/tablaDeSimbolos.h"
+    int yyerror(char *);
+    extern FILE* yyin;  
 %}
 
 %token INICIO FIN LEER ESCRIBIR INT STRING CONST IDENTIFICADOR LITERALCADENA CONSTANTENUMERICA '+' '-' ';' ',' '(' ')' '=:'
@@ -77,3 +79,26 @@ primaria: IDENTIFICADOR                 {$$ = asignarValorAPrimaria(valorDeIdent
 operadorAditivo: '+'    {$$ = $1;}    
                | '-'    {$$ = $1;}
 ;
+
+%%
+
+int yyerror(char *cadena){
+    printf("Error Sintactico: %s\n", cadena);
+    return 0;
+} 
+
+int main(int argc, char *argv[]) 
+{
+    if(argc == 2){ // Entrada por archivo
+        yyin = fopen(argv[1],"r");
+    } else {       // Entrada por teclado
+        yyin = stdin;
+    }
+
+    switch(yyparse())
+    {
+        case 0: printf("El análisis ha finalizado exitosamente.\n");
+        case 1: fprintf(stderr, "Error de análisis sintáctico.\n");
+        case 2: fprintf(stderr, "Error de memoria en yyparse.\n");
+    }
+}
