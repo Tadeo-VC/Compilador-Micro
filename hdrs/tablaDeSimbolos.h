@@ -3,10 +3,13 @@
 
 #define TAMANIO_TS 100
 
-enum tipoDeDato {INT = 0, STRING = 1, ENTRADAVACIA = 2};
+#include <stdio.h>
+#include <string.h>
+
+enum tipoDeDato {NUMERICO = 0, CADENA = 1, ENTRADAVACIA = 2};
 
 typedef struct {
-    float valor;
+    int valor;
     char* cadena;
     enum tipoDeDato tipo;
 } exp;
@@ -18,17 +21,6 @@ typedef struct {
     exp valor;
 } TS;
 
-// Listas
-typedef struct {
-    exp expresion;
-    nodoExp sgteExpresion;
-} nodoExp; // FIFO
-
-typedef struct {
-    char identificador[255];
-    nodoID *sgteIdentificador;
-} nodoID; // FIFO
-
 // - - - - - Rutinas Semanticas
 
 // Declaraciones y Asignacion
@@ -37,20 +29,18 @@ void declararConstante(int posicionDelIdentificador);
 void asignarValorAIdentificador(char identificador[255], exp expresion);
 
 // Entrada / Salida
-void escribir(nodoExp *expresiones);
-void leer(nodoID *identificadores);
 void imprimirExpresion(exp expresion);
 
 // Expresiones
 exp asignarCadenaAExpresion(char *cadena);
 exp reducirExpresion(exp primaria, char operador, exp expresionAritmetica);
-exp asignarValorAPrimaria(float valor);
+exp asignarValorAPrimaria(int valor);
 
 // Otras 
 void inicializarTablaDeSimbolos();
 int posicionVacia(char identificador[255]);
 int posicionDelIdentificador(char identificador[255]);
-exp crearExpresionNumerica(float valor);
+exp crearExpresionNumerica(int valor);
 exp valorDeIdentificador(char identificador[255]);
 
 #endif 

@@ -1,6 +1,4 @@
 #include "../hdrs/tablaDeSimbolos.h"
-#include <stdio.h>
-#include <string.h>
 
 TS tablaDeSimbolos[TAMANIO_TS];
 
@@ -12,13 +10,13 @@ int declararVariable(enum tipoDeDato tipo, char identificador[255])
     strcpy(tablaDeSimbolos[nuevaPosicion].identificador, identificador);
     tablaDeSimbolos[nuevaPosicion].esVariable = 0;
 
-    if(tipo == INT)
+    if(tipo == NUMERICO)
     {
-        tablaDeSimbolos[nuevaPosicion].valor.tipo = INT;
+        tablaDeSimbolos[nuevaPosicion].valor.tipo = NUMERICO;
     }
-    if(tipo == STRING)
+    if(tipo == CADENA)
     {
-        tablaDeSimbolos[nuevaPosicion].valor.tipo = STRING;
+        tablaDeSimbolos[nuevaPosicion].valor.tipo = CADENA;
     }
 
     return nuevaPosicion;
@@ -42,15 +40,13 @@ void asignarValorAIdentificador(char identificador[255], exp expresion)
 
 // Entrada / Salida
 
-void escribir(nodoExp *expresiones){}
-void leer(nodoID *identificadores){}
 void imprimirExpresion(exp expresion)
 {
-    if(expresion.tipo == INT)
+    if(expresion.tipo == NUMERICO)
     {
-        printf("%f", expresion.valor);
+        printf("%d", expresion.valor);
     }
-    if(expresion.tipo == STRING)
+    if(expresion.tipo == CADENA)
     {
         printf("%s", expresion.cadena);
     }
@@ -58,7 +54,7 @@ void imprimirExpresion(exp expresion)
 
 // Expresiones
 
-exp asignarValorAPrimaria(float valor)
+exp asignarValorAPrimaria(int valor)
 {
     return crearExpresionNumerica(valor);
 }
@@ -75,7 +71,7 @@ exp reducirExpresion(exp primaria, char operador, exp expresionAritmetica)
 exp asignarCadenaAExpresion(char *cadena)
 {
     exp nuevaExpresion;
-    nuevaExpresion.tipo = STRING; 
+    nuevaExpresion.tipo = CADENA; 
     nuevaExpresion.cadena = cadena;
     return nuevaExpresion;
 }
@@ -124,10 +120,10 @@ int posicionDelIdentificador(char identificador[255])
     return -1;
 }
 
-exp crearExpresionNumerica(float valor)
+exp crearExpresionNumerica(int valor)
 {
     exp nuevaExpresion;
-    nuevaExpresion.tipo = INT;
+    nuevaExpresion.tipo = NUMERICO;
     nuevaExpresion.valor = valor;
     return nuevaExpresion;
 }

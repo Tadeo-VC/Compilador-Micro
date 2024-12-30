@@ -1,31 +1,33 @@
 %{
-    #include "../hdrs/tablaDeSimbolos.h"
+    #include "hdrs/tablaDeSimbolos.h"
+    extern int yylex();
     int yyerror(char *);
     extern FILE* yyin;  
 %}
 
-%token INICIO FIN LEER ESCRIBIR INT STRING CONST IDENTIFICADOR LITERALCADENA CONSTANTENUMERICA '+' '-' ';' ',' '(' ')' '=:'
+%token INICIO FIN LEER ESCRIBIR INT STRING CONST IDENTIFICADOR LITERALCADENA CONSTANTENUMERICA '+' '-' ';' ',' '(' ')' ASIGNACION
 
 %union{
     char  id[255];
     char* string;
-    float numerico;
+    int   numerico;
     int   posicion;
     char  operador;
     exp   tExp;
+}
 
 %type <id>       IDENTIFICADOR 
 %type <string>   LITERALCADENA
-%type <numerico> CONSTANTENUMERICA expresionAritmetica
+%type <numerico> CONSTANTENUMERICA
 %type <posicion> declaracionInt declaracionString // las declaraciones pasan la posicion del identificador para volverlo constante
-%type <operador> '+' '-'
+%type <operador> '+' '-' operadorAditivo
 %type <tExp>     expresion expresionAritmetica primaria
 
 %% // Gramatica
 
 // Estructura
 objetivo:
-    programa    {inicializarTablaDeSimbolos();}
+    programa    
 ;
 programa: INICIO listaDeSentencias FIN
 ;
@@ -49,12 +51,12 @@ declaracionInt: INT IDENTIFICADOR       {$$ = declararVariable(0, $2);}  // 0 = 
 declaracionString: STRING IDENTIFICADOR {$$ = declararVariable(1, $2);}  // 0 = STRING, retorna la posicion del identificador
 
 // Asignaciones
-asignacion: IDENTIFICADOR '=:' expresion    {asignarValorAIdentificador($1, $3);} 
+asignacion: IDENTIFICADOR ASIGNACION expresion    {asignarValorAIdentificador($1, $3);} 
 ;
 
 // Entrada y Salida 
-entradaSalida: ESCRIBIR '(' listaDeExpresiones ')'  {escribir($3);} // printear expresiones reducidas, variables Y texto en pantalla
-             | LEER '(' listaDeIdentificadores ')'  {leer($3);}     // asignar valor de la expresion reducida ingresada por teclado a cada variable
+entradaSalida: ESCRIBIR '(' listaDeExpresiones ')'  
+             | LEER '(' listaDeIdentificadores ')'  
 ;
 
 // Listas y Expresiones
@@ -72,7 +74,7 @@ expresion: expresionAritmetica  {$$ = $1;}                            // de acue
 expresionAritmetica: primaria operadorAditivo expresionAritmetica   {$$ = reducirExpresion($1, $2, $3);} // reducir expresion 
                    | primaria                                       {$$ = $1;}
 ;
-primaria: IDENTIFICADOR                 {$$ = asignarValorAPrimaria(valorDeIdentificador($1));}
+primaria: IDENTIFICADOR                 {exp expresion = valorDeIdentificador($1); $$ = asignarValorAPrimaria(expresion.valor);}
         | CONSTANTENUMERICA             {$$ = asignarValorAPrimaria($1);}
         | '(' expresionAritmetica ')'   {$$ = $2;}
 ;
@@ -94,6 +96,8 @@ int main(int argc, char *argv[])
     } else {       // Entrada por teclado
         yyin = stdin;
     }
+
+    inicializarTablaDeSimbolos();
 
     switch(yyparse())
     {
