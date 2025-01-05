@@ -19,9 +19,9 @@
 %type <id>       IDENTIFICADOR 
 %type <string>   LITERALCADENA
 %type <numerico> CONSTANTENUMERICA
-%type <posicion> declaracionInt declaracionString // las declaraciones pasan la posicion del identificador para volverlo constante
+%type <posicion> declaracionInt declaracionString 
 %type <operador> '+' '-' operadorAditivo
-%type <tExp>     expresion expresionAritmetica primaria
+%type <tExp>     expresion primaria
 
 %% // Gramatica
 
@@ -66,18 +66,16 @@ listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores    {asignarValo
                       | IDENTIFICADOR                               {asignarValorAIdentificador($1, ingresarValorDeIdentificador($1));}
 ;
 
-listaDeExpresiones: expresion ',' listaDeExpresiones    {imprimirExpresion($1);}            
-                  | expresion                           {imprimirExpresion($1);}        
+listaDeExpresiones: expresion ',' listaDeExpresiones        {imprimirExpresion($1);}            
+                  | expresion                               {imprimirExpresion($1);}       
 ;
-expresion: expresionAritmetica  {$$ = $1;}                            // de acuerdo al tipo que le llegue se le asigna el valor y el tipo a la expresion 
-         | LITERALCADENA        {$$ = asignarCadenaAExpresion($1);}   //
+expresion: primaria operadorAditivo expresion   {$$ = reducirExpresion($1, $2, $3);} 
+         | primaria                             {$$ = $1;}
 ;
-expresionAritmetica: primaria operadorAditivo expresionAritmetica   {$$ = reducirExpresion($1, $2, $3);} // reducir expresion 
-                   | primaria                                       {$$ = $1;}
-;
-primaria: IDENTIFICADOR                 {exp expresion = valorDeIdentificador($1); $$ = asignarValorAPrimaria(expresion.valor);}
-        | CONSTANTENUMERICA             {$$ = asignarValorAPrimaria($1);}
-        | '(' expresionAritmetica ')'   {$$ = $2;}
+primaria: IDENTIFICADOR         {$$ = valorDeIdentificador($1);}
+        | '(' expresion ')'     {$$ = $2;}
+        | CONSTANTENUMERICA     {$$ = asignarEnteroAPrimaria($1);}
+        | LITERALCADENA         {$$ = asignarCadenaAPrimaria($1);}   // tengo que encontrar la forma de lograr ascender con identificador desde LITERALCADENA para poder impriirlo
 ;
 operadorAditivo: '+'    {$$ = $1;}    
                | '-'    {$$ = $1;}
@@ -92,9 +90,9 @@ int yyerror(char *cadena){
 
 int main(int argc, char *argv[]) 
 {
-    if(argc == 2){ // Entrada por archivo
+    if(argc == 2){ 
         yyin = fopen(argv[1],"r");
-    } else {       // Entrada por teclado
+    } else {      
         yyin = stdin;
     }
 

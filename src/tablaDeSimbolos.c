@@ -52,7 +52,7 @@ exp ingresarValorDeIdentificador(char identificador[255])
     {
         char *cadenaIngresada;
         scanf("%s", cadenaIngresada);
-        return asignarCadenaAExpresion(cadenaIngresada);
+        return asignarCadenaAPrimaria(cadenaIngresada);
     }
 
     printf("Error: El identificador no tiene un tipo asignado");
@@ -63,7 +63,6 @@ exp ingresarValorDeIdentificador(char identificador[255])
 
 void imprimirExpresion(exp expresion)
 {
-    printf("TIPO: %i\n", expresion.tipo);
     if(expresion.tipo == NUMERICO)
     {
         printf("%d\n", expresion.valor);
@@ -72,14 +71,11 @@ void imprimirExpresion(exp expresion)
     {
         printf("%s\n", expresion.cadena);
     }
+
+    return;
 }
 
 // Expresiones
-
-exp asignarValorAPrimaria(int valor)
-{
-    return crearExpresionNumerica(valor);
-}
 
 exp reducirExpresion(exp primaria, char operador, exp expresionAritmetica)
 {
@@ -90,11 +86,16 @@ exp reducirExpresion(exp primaria, char operador, exp expresionAritmetica)
     }
 }
 
-exp asignarCadenaAExpresion(char *cadena)
+exp asignarEnteroAPrimaria(int valor)
+{
+    return crearExpresionNumerica(valor);
+}
+
+exp asignarCadenaAPrimaria(char *cadena)
 {
     exp nuevaExpresion;
     nuevaExpresion.tipo = CADENA; 
-    nuevaExpresion.cadena = cadena;
+    nuevaExpresion.cadena = strdup(cadena);
     return nuevaExpresion;
 }
 

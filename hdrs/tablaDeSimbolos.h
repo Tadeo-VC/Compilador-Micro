@@ -33,9 +33,9 @@ exp ingresarValorDeIdentificador(char identificador[255]);
 void imprimirExpresion(exp expresion);
 
 // Expresiones
-exp asignarCadenaAExpresion(char *cadena);
 exp reducirExpresion(exp primaria, char operador, exp expresionAritmetica);
-exp asignarValorAPrimaria(int valor);
+exp asignarEnteroAPrimaria(int valor);
+exp asignarCadenaAPrimaria(char *cadena);
 
 // Otras 
 void inicializarTablaDeSimbolos();
