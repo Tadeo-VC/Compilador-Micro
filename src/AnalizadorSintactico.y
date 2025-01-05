@@ -62,12 +62,12 @@ entradaSalida: ESCRIBIR '(' listaDeExpresiones ')'
 
 // Listas y Expresiones
 
-listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores    {printf("%s", $1);;}    
-                      | IDENTIFICADOR                               {printf("%s", $1);}
+listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores    {asignarValorAIdentificador($1, ingresarValorDeIdentificador($1));}    
+                      | IDENTIFICADOR                               {asignarValorAIdentificador($1, ingresarValorDeIdentificador($1));}
 ;
 
-listaDeExpresiones: expresion ',' listaDeExpresiones    {imprimirExpresion($1);}    
-                  | expresion                           {imprimirExpresion($1);}
+listaDeExpresiones: expresion ',' listaDeExpresiones    {imprimirExpresion($1);}            
+                  | expresion                           {imprimirExpresion($1);}        
 ;
 expresion: expresionAritmetica  {$$ = $1;}                            // de acuerdo al tipo que le llegue se le asigna el valor y el tipo a la expresion 
          | LITERALCADENA        {$$ = asignarCadenaAExpresion($1);}   //

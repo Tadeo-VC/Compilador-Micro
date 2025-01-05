@@ -1154,13 +1154,13 @@ yyreduce:
 
   case 19: /* listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores  */
 #line 65 "src/AnalizadorSintactico.y"
-                                                                    {printf("%s", (yyvsp[-2].id));;}
+                                                                    {asignarValorAIdentificador((yyvsp[-2].id), ingresarValorDeIdentificador((yyvsp[-2].id)));}
 #line 1159 "AnalizadorSintactico.tab.c"
     break;
 
   case 20: /* listaDeIdentificadores: IDENTIFICADOR  */
 #line 66 "src/AnalizadorSintactico.y"
-                                                                    {printf("%s", (yyvsp[0].id));}
+                                                                    {asignarValorAIdentificador((yyvsp[0].id), ingresarValorDeIdentificador((yyvsp[0].id)));}
 #line 1165 "AnalizadorSintactico.tab.c"
     break;
 

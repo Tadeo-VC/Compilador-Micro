@@ -27,6 +27,7 @@ typedef struct {
 int declararVariable(enum tipoDeDato tipo, char identificador[255]); // retorna la posicion del identificador para facilitar la declaracion de constante
 void declararConstante(int posicionDelIdentificador);
 void asignarValorAIdentificador(char identificador[255], exp expresion);
+exp ingresarValorDeIdentificador(char identificador[255]);
 
 // Entrada / Salida
 void imprimirExpresion(exp expresion);

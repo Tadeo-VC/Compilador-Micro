@@ -38,17 +38,39 @@ void asignarValorAIdentificador(char identificador[255], exp expresion)
     printf("Error: El tipo de la expresion coincide con el tipo del identificador\n | Tipo del identificador: %i\n | Tipo de la expresion: %i\n", tablaDeSimbolos[posicion].valor.tipo, expresion.tipo);
 }
 
+exp ingresarValorDeIdentificador(char identificador[255])
+{
+    int posicion = posicionDelIdentificador(identificador);
+
+    if(tablaDeSimbolos[posicion].valor.tipo == NUMERICO)
+    {
+        int valorIngresado;
+        scanf("%i", &valorIngresado);
+        return crearExpresionNumerica(valorIngresado);
+    } 
+    if(tablaDeSimbolos[posicion].valor.tipo == CADENA)
+    {
+        char *cadenaIngresada;
+        scanf("%s", cadenaIngresada);
+        return asignarCadenaAExpresion(cadenaIngresada);
+    }
+
+    printf("Error: El identificador no tiene un tipo asignado");
+    return tablaDeSimbolos[posicion].valor;
+}
+
 // Entrada / Salida
 
 void imprimirExpresion(exp expresion)
 {
+    printf("TIPO: %i\n", expresion.tipo);
     if(expresion.tipo == NUMERICO)
     {
-        printf("%d", expresion.valor);
+        printf("%d\n", expresion.valor);
     }
     if(expresion.tipo == CADENA)
     {
-        printf("%s", expresion.cadena);
+        printf("%s\n", expresion.cadena);
     }
 }
 
