@@ -91,7 +91,7 @@ int posicionVacia(char identificador[255])
     int i = 0;
     for(i; tablaDeSimbolos[i].valor.tipo != ENTRADAVACIA && i < TAMANIO_TS; i++)
     {
-        if(strcmp(tablaDeSimbolos[i].identificador, identificador))
+        if(!strcmp(tablaDeSimbolos[i].identificador, identificador))
         {
             printf("Error: Ya existe el identificador \"%s\"\n", identificador);
             return -1;
