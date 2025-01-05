@@ -42,13 +42,14 @@ sentencia: declaracion
 // Declaraciones y Asignacion
 declaracion:    
            | declaracionInt           
-           | CONST declaracionInt       {declararConstante($2);} 
+           | CONST declaracionInt ASIGNACION expresion      {declararConstante($2);} 
            | declaracionString        
-           | CONST declaracionString    {declararConstante($2);}
+           | CONST declaracionString ASIGNACION expresion   {declararConstante($2);}
 ;
 declaracionInt: INT IDENTIFICADOR       {$$ = declararVariable(0, $2);}  // 0 = INT, retorna la posicion del identificador
 ;
 declaracionString: STRING IDENTIFICADOR {$$ = declararVariable(1, $2);}  // 0 = STRING, retorna la posicion del identificador
+;
 
 // Asignaciones
 asignacion: IDENTIFICADOR ASIGNACION expresion    {asignarValorAIdentificador($1, $3);} 
@@ -101,8 +102,8 @@ int main(int argc, char *argv[])
 
     switch(yyparse())
     {
-        case 0: printf("El análisis ha finalizado exitosamente.\n");
-        case 1: fprintf(stderr, "Error de análisis sintáctico.\n");
-        case 2: fprintf(stderr, "Error de memoria en yyparse.\n");
+        case 0: printf("El análisis ha finalizado exitosamente.\n"); break;
+        case 1: fprintf(stderr, "Error de análisis sintáctico.\n"); break;
+        case 2: fprintf(stderr, "Error de memoria en yyparse.\n"); break;
     }
 }

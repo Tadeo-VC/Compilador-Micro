@@ -15,9 +15,9 @@ Grammar
 
     8 declaracion: ε
     9            | declaracionInt
-   10            | CONST declaracionInt
+   10            | CONST declaracionInt ASIGNACION expresion
    11            | declaracionString
-   12            | CONST declaracionString
+   12            | CONST declaracionString ASIGNACION expresion
 
    13 declaracionInt: INT IDENTIFICADOR
 
@@ -68,7 +68,7 @@ Terminals, with rules where they appear
     IDENTIFICADOR <id> (265) 13 14 15 18 19 26
     LITERALCADENA <string> (266) 23
     CONSTANTENUMERICA <numerico> (267) 27
-    ASIGNACION (268) 15
+    ASIGNACION (268) 10 12 15
 
 
 Nonterminals, with rules where they appear
@@ -110,7 +110,7 @@ Nonterminals, with rules where they appear
         on right: 16 20
     expresion <tExp> (32)
         on left: 22 23
-        on right: 15 20 21
+        on right: 10 12 15 20 21
     expresionAritmetica <tExp> (33)
         on left: 24 25
         on right: 22 24 28
@@ -198,8 +198,8 @@ State 7
 
 State 8
 
-   10 declaracion: CONST • declaracionInt
-   12            | CONST • declaracionString
+   10 declaracion: CONST • declaracionInt ASIGNACION expresion
+   12            | CONST • declaracionString ASIGNACION expresion
 
     INT     shift, and go to state 6
     STRING  shift, and go to state 7
@@ -312,16 +312,16 @@ State 21
 
 State 22
 
-   10 declaracion: CONST declaracionInt •
+   10 declaracion: CONST declaracionInt • ASIGNACION expresion
 
-    $default  reduce using rule 10 (declaracion)
+    ASIGNACION  shift, and go to state 37
 
 
 State 23
 
-   12 declaracion: CONST declaracionString •
+   12 declaracion: CONST declaracionString • ASIGNACION expresion
 
-    $default  reduce using rule 12 (declaracion)
+    ASIGNACION  shift, and go to state 38
 
 
 State 24
@@ -333,7 +333,7 @@ State 24
     CONSTANTENUMERICA  shift, and go to state 31
     '('                shift, and go to state 32
 
-    expresion            go to state 37
+    expresion            go to state 39
     expresionAritmetica  go to state 35
     primaria             go to state 36
 
@@ -360,7 +360,7 @@ State 26
     ';'       reduce using rule 8 (declaracion)
     $default  reduce using rule 4 (listaDeSentencias)
 
-    listaDeSentencias  go to state 38
+    listaDeSentencias  go to state 40
     sentencia          go to state 11
     declaracion        go to state 12
     declaracionInt     go to state 13
@@ -374,7 +374,7 @@ State 27
    18 listaDeIdentificadores: IDENTIFICADOR • ',' listaDeIdentificadores
    19                       | IDENTIFICADOR •
 
-    ','  shift, and go to state 39
+    ','  shift, and go to state 41
 
     $default  reduce using rule 19 (listaDeIdentificadores)
 
@@ -383,7 +383,7 @@ State 28
 
    17 entradaSalida: LEER '(' listaDeIdentificadores • ')'
 
-    ')'  shift, and go to state 40
+    ')'  shift, and go to state 42
 
 
 State 29
@@ -415,7 +415,7 @@ State 32
     CONSTANTENUMERICA  shift, and go to state 31
     '('                shift, and go to state 32
 
-    expresionAritmetica  go to state 41
+    expresionAritmetica  go to state 43
     primaria             go to state 36
 
 
@@ -423,7 +423,7 @@ State 33
 
    16 entradaSalida: ESCRIBIR '(' listaDeExpresiones • ')'
 
-    ')'  shift, and go to state 42
+    ')'  shift, and go to state 44
 
 
 State 34
@@ -431,7 +431,7 @@ State 34
    20 listaDeExpresiones: expresion • ',' listaDeExpresiones
    21                   | expresion •
 
-    ','  shift, and go to state 43
+    ','  shift, and go to state 45
 
     $default  reduce using rule 21 (listaDeExpresiones)
 
@@ -448,59 +448,87 @@ State 36
    24 expresionAritmetica: primaria • operadorAditivo expresionAritmetica
    25                    | primaria •
 
-    '+'  shift, and go to state 44
-    '-'  shift, and go to state 45
+    '+'  shift, and go to state 46
+    '-'  shift, and go to state 47
 
     $default  reduce using rule 25 (expresionAritmetica)
 
-    operadorAditivo  go to state 46
+    operadorAditivo  go to state 48
 
 
 State 37
+
+   10 declaracion: CONST declaracionInt ASIGNACION • expresion
+
+    IDENTIFICADOR      shift, and go to state 29
+    LITERALCADENA      shift, and go to state 30
+    CONSTANTENUMERICA  shift, and go to state 31
+    '('                shift, and go to state 32
+
+    expresion            go to state 49
+    expresionAritmetica  go to state 35
+    primaria             go to state 36
+
+
+State 38
+
+   12 declaracion: CONST declaracionString ASIGNACION • expresion
+
+    IDENTIFICADOR      shift, and go to state 29
+    LITERALCADENA      shift, and go to state 30
+    CONSTANTENUMERICA  shift, and go to state 31
+    '('                shift, and go to state 32
+
+    expresion            go to state 50
+    expresionAritmetica  go to state 35
+    primaria             go to state 36
+
+
+State 39
 
    15 asignacion: IDENTIFICADOR ASIGNACION expresion •
 
     $default  reduce using rule 15 (asignacion)
 
 
-State 38
+State 40
 
     3 listaDeSentencias: sentencia ';' listaDeSentencias •
 
     $default  reduce using rule 3 (listaDeSentencias)
 
 
-State 39
+State 41
 
    18 listaDeIdentificadores: IDENTIFICADOR ',' • listaDeIdentificadores
 
     IDENTIFICADOR  shift, and go to state 27
 
-    listaDeIdentificadores  go to state 47
+    listaDeIdentificadores  go to state 51
 
 
-State 40
+State 42
 
    17 entradaSalida: LEER '(' listaDeIdentificadores ')' •
 
     $default  reduce using rule 17 (entradaSalida)
 
 
-State 41
+State 43
 
    28 primaria: '(' expresionAritmetica • ')'
 
-    ')'  shift, and go to state 48
+    ')'  shift, and go to state 52
 
 
-State 42
+State 44
 
    16 entradaSalida: ESCRIBIR '(' listaDeExpresiones ')' •
 
     $default  reduce using rule 16 (entradaSalida)
 
 
-State 43
+State 45
 
    20 listaDeExpresiones: expresion ',' • listaDeExpresiones
 
@@ -509,27 +537,27 @@ State 43
     CONSTANTENUMERICA  shift, and go to state 31
     '('                shift, and go to state 32
 
-    listaDeExpresiones   go to state 49
+    listaDeExpresiones   go to state 53
     expresion            go to state 34
     expresionAritmetica  go to state 35
     primaria             go to state 36
 
 
-State 44
+State 46
 
    29 operadorAditivo: '+' •
 
     $default  reduce using rule 29 (operadorAditivo)
 
 
-State 45
+State 47
 
    30 operadorAditivo: '-' •
 
     $default  reduce using rule 30 (operadorAditivo)
 
 
-State 46
+State 48
 
    24 expresionAritmetica: primaria operadorAditivo • expresionAritmetica
 
@@ -537,32 +565,46 @@ State 46
     CONSTANTENUMERICA  shift, and go to state 31
     '('                shift, and go to state 32
 
-    expresionAritmetica  go to state 50
+    expresionAritmetica  go to state 54
     primaria             go to state 36
 
 
-State 47
+State 49
+
+   10 declaracion: CONST declaracionInt ASIGNACION expresion •
+
+    $default  reduce using rule 10 (declaracion)
+
+
+State 50
+
+   12 declaracion: CONST declaracionString ASIGNACION expresion •
+
+    $default  reduce using rule 12 (declaracion)
+
+
+State 51
 
    18 listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores •
 
     $default  reduce using rule 18 (listaDeIdentificadores)
 
 
-State 48
+State 52
 
    28 primaria: '(' expresionAritmetica ')' •
 
     $default  reduce using rule 28 (primaria)
 
 
-State 49
+State 53
 
    20 listaDeExpresiones: expresion ',' listaDeExpresiones •
 
     $default  reduce using rule 20 (listaDeExpresiones)
 
 
-State 50
+State 54
 
    24 expresionAritmetica: primaria operadorAditivo expresionAritmetica •
 

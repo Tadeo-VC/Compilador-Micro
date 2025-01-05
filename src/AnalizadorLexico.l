@@ -37,7 +37,7 @@ espaciosEnBlanco    [ \t\n]
 ","                     return ',';
 "("                     return '(';
 ")"                     return ')';                                 
-"=:"                    return ASIGNACION;                    
+":="                    return ASIGNACION;                    
 
 {espaciosEnBlanco}      ;                   
 .                       ErrorLexico(yytext);
