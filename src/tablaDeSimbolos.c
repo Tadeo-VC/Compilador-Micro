@@ -89,21 +89,19 @@ void inicializarTablaDeSimbolos()
 int posicionVacia(char identificador[255])
 {
     int i = 0;
-    for(i; !strcmp(tablaDeSimbolos[i].identificador, identificador) && i < TAMANIO_TS; i++)
+    for(i; tablaDeSimbolos[i].valor.tipo != ENTRADAVACIA && i < TAMANIO_TS; i++)
     {
-        if(tablaDeSimbolos[i].valor.tipo == ENTRADAVACIA)
+        if(strcmp(tablaDeSimbolos[i].identificador, identificador))
+        {
+            printf("Error: Ya existe el identificador \"%s\"\n", identificador);
+            return -1;
+        }
+    }
+
+    if(i < TAMANIO_TS){
         return i;
-    }
-    
-    if(strcmp(tablaDeSimbolos[i].identificador, identificador))
-    {
-        printf("Error: Ya existe el identificador \"%s\"\n", identificador);
-        return -1;
-    }
-    
-    if(!(i < TAMANIO_TS))
-    {
-        printf("Error: La tabla de simbolos no puede almacenar mas identificadores\n");
+    } else {
+        printf("Error: No hay mas espacio en la tabla de simbolos\n");
         return -2;
     }
 }

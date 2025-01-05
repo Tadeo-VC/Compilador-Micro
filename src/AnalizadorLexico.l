@@ -3,6 +3,7 @@
     #include "AnalizadorSintactico.tab.h"
     
     void ErrorLexico(char *);
+    extern int yylex();
 %}
 
 %option noyywrap
@@ -12,9 +13,9 @@ digito              [0-9]
 
 identificador       ({letra}|_)({letra}|{digito})*
 literalCadena       \"(\\.|[^\"\\])*\"
-constanteNumerica   ({digito})
+constanteNumerica   ({digito})+
 
-espaciosEnBlanco    [\t\n]+
+espaciosEnBlanco    [ \t\n]
 
 %% 
 
@@ -26,8 +27,8 @@ espaciosEnBlanco    [\t\n]+
 "string"                return STRING;
 "const"                 return CONST;
 
-{identificador}         {strcpy(yylval.id, yytext);     return IDENTIFICADOR;}                                 
-{literalCadena}         {yylval.string = yytext;        return LITERALCADENA;}                                
+{identificador}         {strcpy(yylval.id, yytext);       return IDENTIFICADOR;}                                 
+{literalCadena}         {yylval.string = yytext;          return LITERALCADENA;}                                
 {constanteNumerica}     {yylval.numerico = atoi(yytext);  return CONSTANTENUMERICA;}        
 
 "+"                     return '+';                                 
