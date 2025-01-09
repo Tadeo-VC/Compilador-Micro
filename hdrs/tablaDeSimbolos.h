@@ -4,6 +4,7 @@
 #define TAMANIO_TS 100
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 enum tipoDeDato {NUMERICO = 0, CADENA = 1, ENTRADAVACIA = 2};

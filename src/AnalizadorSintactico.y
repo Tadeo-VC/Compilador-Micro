@@ -46,7 +46,7 @@ declaracion:
            | declaracionString        
            | CONST declaracionString ASIGNACION expresion   {declararConstante($2);}
 ;
-declaracionInt: INT IDENTIFICADOR       {$$ = declararVariable(0, $2);}  // 0 = INT, retorna la posicion del identificador
+declaracionInt: INT IDENTIFICADOR       {$$ = declararVariable(0, $2);}  // 0 = INT,    retorna la posicion del identificador
 ;
 declaracionString: STRING IDENTIFICADOR {$$ = declararVariable(1, $2);}  // 0 = STRING, retorna la posicion del identificador
 ;
@@ -66,16 +66,16 @@ listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores    {asignarValo
                       | IDENTIFICADOR                               {asignarValorAIdentificador($1, ingresarValorDeIdentificador($1));}
 ;
 
-listaDeExpresiones: expresion ',' listaDeExpresiones        {imprimirExpresion($1);}            
-                  | expresion                               {imprimirExpresion($1);}       
+listaDeExpresiones: expresion ',' listaDeExpresiones        {imprimirExpresion($1);} // ACA YA LLEGAN MAL            
+                  | expresion                               {imprimirExpresion($1);} // ACA YA LLEGAN MAL       
 ;
-expresion: primaria operadorAditivo expresion   {$$ = reducirExpresion($1, $2, $3);} 
-         | primaria                             {$$ = $1;}
+expresion: primaria operadorAditivo expresion   {$$ = reducirExpresion($1, $2, $3);} //ACA TAMBIEN LLEGAN MAL YA ESTA PRIMARIA HDP TE TENGO
+         | primaria                             {$$ = $1;}                           //ACA TAMBIEN LLEGAN MAL YA ESTA PRIMARIA HDP TE TENGO
 ;
-primaria: IDENTIFICADOR         {$$ = valorDeIdentificador($1);}
-        | '(' expresion ')'     {$$ = $2;}
-        | CONSTANTENUMERICA     {$$ = asignarEnteroAPrimaria($1);}
-        | LITERALCADENA         {$$ = asignarCadenaAPrimaria($1);}   // tengo que encontrar la forma de lograr ascender con identificador desde LITERALCADENA para poder impriirlo
+primaria: IDENTIFICADOR         {$$ = valorDeIdentificador($1);}      // LOS VALORES INGRESAN BIEN A PRIMARIA, PERO SE ALMACENAN MAL YA ESTA PRIMARIA HDP
+        | '(' expresion ')'     {$$ = $2;}                            // CUANDO SE DEFINEN LOS VALORES ENTRAN BIEN, PERO DESPUES ARRANCA EL DELIRIO
+        | CONSTANTENUMERICA     {$$ = asignarEnteroAPrimaria($1);}    // EL VALOR QUE SE COPIA EN BUCLE ES EL DE LA ULTIMA VARIBLE DEFINIDA O 0 SI HAY 0-1 VARIABLE DEFINIDA
+        | LITERALCADENA         {$$ = asignarCadenaAPrimaria($1);}   
 ;
 operadorAditivo: '+'    {$$ = $1;}    
                | '-'    {$$ = $1;}
