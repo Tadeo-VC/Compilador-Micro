@@ -2,6 +2,7 @@
 #define TABLADESIMBOLOS_H
 
 #define TAMANIO_TS 100
+#define TAMANIO_LEXP 23
 
 #include <stdio.h>
 #include <string.h>
@@ -30,7 +31,10 @@ void asignarValorAIdentificador(char identificador[255], exp expresion);
 exp ingresarValorDeIdentificador(char identificador[255]);
 
 // Entrada / Salida
-void imprimirExpresion(exp expresion);
+void inicializarListaDeExpresiones();
+void agregarExpresion(exp expresion);
+void escribir();
+void leer();
 
 // Expresiones
 exp reducirExpresion(exp primaria, char operador, exp expresionAritmetica);
@@ -41,6 +45,7 @@ exp asignarCadenaAPrimaria(char *cadena);
 void inicializarTablaDeSimbolos();
 int posicionVacia(char identificador[255]);
 int posicionDelIdentificador(char identificador[255]);
+void imprimirExpresion(exp expresion);
 exp crearExpresionNumerica(int valor);
 exp valorDeIdentificador(char identificador[255]);
 

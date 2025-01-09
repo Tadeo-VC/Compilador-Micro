@@ -524,9 +524,9 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int8 yyrline[] =
 {
        0,    30,    30,    32,    34,    35,    37,    38,    39,    43,
-      44,    45,    46,    47,    49,    51,    55,    59,    60,    65,
-      66,    69,    70,    72,    73,    75,    76,    77,    78,    80,
-      81
+      44,    45,    46,    47,    49,    51,    55,    59,    60,    64,
+      65,    68,    69,    71,    72,    74,    75,    76,    77,    79,
+      80
 };
 #endif
 
@@ -1151,80 +1151,86 @@ yyreduce:
 #line 1152 "AnalizadorSintactico.tab.c"
     break;
 
-  case 19: /* listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores  */
-#line 65 "src/AnalizadorSintactico.y"
-                                                                    {asignarValorAIdentificador((yyvsp[-2].id), ingresarValorDeIdentificador((yyvsp[-2].id)));}
+  case 17: /* entradaSalida: ESCRIBIR '(' listaDeExpresiones ')'  */
+#line 59 "src/AnalizadorSintactico.y"
+                                                    {inicializarListaDeExpresiones(); escribir();}
 #line 1158 "AnalizadorSintactico.tab.c"
     break;
 
-  case 20: /* listaDeIdentificadores: IDENTIFICADOR  */
-#line 66 "src/AnalizadorSintactico.y"
-                                                                    {asignarValorAIdentificador((yyvsp[0].id), ingresarValorDeIdentificador((yyvsp[0].id)));}
+  case 19: /* listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores  */
+#line 64 "src/AnalizadorSintactico.y"
+                                                                    {asignarValorAIdentificador((yyvsp[-2].id), ingresarValorDeIdentificador((yyvsp[-2].id)));}
 #line 1164 "AnalizadorSintactico.tab.c"
     break;
 
-  case 21: /* listaDeExpresiones: expresion ',' listaDeExpresiones  */
-#line 69 "src/AnalizadorSintactico.y"
-                                                            {imprimirExpresion((yyvsp[-2].tExp));}
+  case 20: /* listaDeIdentificadores: IDENTIFICADOR  */
+#line 65 "src/AnalizadorSintactico.y"
+                                                                    {asignarValorAIdentificador((yyvsp[0].id), ingresarValorDeIdentificador((yyvsp[0].id)));}
 #line 1170 "AnalizadorSintactico.tab.c"
     break;
 
-  case 22: /* listaDeExpresiones: expresion  */
-#line 70 "src/AnalizadorSintactico.y"
-                                                            {imprimirExpresion((yyvsp[0].tExp));}
+  case 21: /* listaDeExpresiones: expresion ',' listaDeExpresiones  */
+#line 68 "src/AnalizadorSintactico.y"
+                                                        {agregarExpresion((yyvsp[-2].tExp));}
 #line 1176 "AnalizadorSintactico.tab.c"
     break;
 
-  case 23: /* expresion: primaria operadorAditivo expresion  */
-#line 72 "src/AnalizadorSintactico.y"
-                                                {(yyval.tExp) = reducirExpresion((yyvsp[-2].tExp), (yyvsp[-1].operador), (yyvsp[0].tExp));}
+  case 22: /* listaDeExpresiones: expresion  */
+#line 69 "src/AnalizadorSintactico.y"
+                                                        {imprimirExpresion((yyvsp[0].tExp));}
 #line 1182 "AnalizadorSintactico.tab.c"
     break;
 
-  case 24: /* expresion: primaria  */
-#line 73 "src/AnalizadorSintactico.y"
-                                                {(yyval.tExp) = (yyvsp[0].tExp);}
+  case 23: /* expresion: primaria operadorAditivo expresion  */
+#line 71 "src/AnalizadorSintactico.y"
+                                                {(yyval.tExp) = reducirExpresion((yyvsp[-2].tExp), (yyvsp[-1].operador), (yyvsp[0].tExp));}
 #line 1188 "AnalizadorSintactico.tab.c"
     break;
 
-  case 25: /* primaria: IDENTIFICADOR  */
-#line 75 "src/AnalizadorSintactico.y"
-                                {(yyval.tExp) = valorDeIdentificador((yyvsp[0].id));}
+  case 24: /* expresion: primaria  */
+#line 72 "src/AnalizadorSintactico.y"
+                                                {(yyval.tExp) = (yyvsp[0].tExp);}
 #line 1194 "AnalizadorSintactico.tab.c"
     break;
 
-  case 26: /* primaria: '(' expresion ')'  */
-#line 76 "src/AnalizadorSintactico.y"
-                                {(yyval.tExp) = (yyvsp[-1].tExp);}
+  case 25: /* primaria: IDENTIFICADOR  */
+#line 74 "src/AnalizadorSintactico.y"
+                                {(yyval.tExp) = valorDeIdentificador((yyvsp[0].id));}
 #line 1200 "AnalizadorSintactico.tab.c"
     break;
 
-  case 27: /* primaria: CONSTANTENUMERICA  */
-#line 77 "src/AnalizadorSintactico.y"
-                                {(yyval.tExp) = asignarEnteroAPrimaria((yyvsp[0].numerico));}
+  case 26: /* primaria: '(' expresion ')'  */
+#line 75 "src/AnalizadorSintactico.y"
+                                {(yyval.tExp) = (yyvsp[-1].tExp);}
 #line 1206 "AnalizadorSintactico.tab.c"
     break;
 
-  case 28: /* primaria: LITERALCADENA  */
-#line 78 "src/AnalizadorSintactico.y"
-                                {(yyval.tExp) = asignarCadenaAPrimaria((yyvsp[0].string));}
+  case 27: /* primaria: CONSTANTENUMERICA  */
+#line 76 "src/AnalizadorSintactico.y"
+                                {(yyval.tExp) = asignarEnteroAPrimaria((yyvsp[0].numerico));}
 #line 1212 "AnalizadorSintactico.tab.c"
     break;
 
-  case 29: /* operadorAditivo: '+'  */
-#line 80 "src/AnalizadorSintactico.y"
-                        {(yyval.operador) = (yyvsp[0].operador);}
+  case 28: /* primaria: LITERALCADENA  */
+#line 77 "src/AnalizadorSintactico.y"
+                                {(yyval.tExp) = asignarCadenaAPrimaria((yyvsp[0].string));}
 #line 1218 "AnalizadorSintactico.tab.c"
     break;
 
-  case 30: /* operadorAditivo: '-'  */
-#line 81 "src/AnalizadorSintactico.y"
+  case 29: /* operadorAditivo: '+'  */
+#line 79 "src/AnalizadorSintactico.y"
                         {(yyval.operador) = (yyvsp[0].operador);}
 #line 1224 "AnalizadorSintactico.tab.c"
     break;
 
+  case 30: /* operadorAditivo: '-'  */
+#line 80 "src/AnalizadorSintactico.y"
+                        {(yyval.operador) = (yyvsp[0].operador);}
+#line 1230 "AnalizadorSintactico.tab.c"
+    break;
 
-#line 1228 "AnalizadorSintactico.tab.c"
+
+#line 1234 "AnalizadorSintactico.tab.c"
 
       default: break;
     }
@@ -1417,7 +1423,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 84 "src/AnalizadorSintactico.y"
+#line 83 "src/AnalizadorSintactico.y"
 
 
 int yyerror(char *cadena){
@@ -1437,8 +1443,8 @@ int main(int argc, char *argv[])
 
     switch(yyparse())
     {
-        case 0: printf("El análisis ha finalizado exitosamente.\n"); break;
-        case 1: fprintf(stderr, "Error de análisis sintáctico.\n"); break;
-        case 2: fprintf(stderr, "Error de memoria en yyparse.\n"); break;
+        case 0: printf("\nEl análisis ha finalizado exitosamente.\n"); break;
+        case 1: fprintf(stderr, "\nError de análisis sintáctico.\n"); break;
+        case 2: fprintf(stderr, "\nError de memoria en yyparse.\n"); break;
     }
 }

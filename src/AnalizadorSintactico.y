@@ -56,18 +56,17 @@ asignacion: IDENTIFICADOR ASIGNACION expresion    {asignarValorAIdentificador($1
 ;
 
 // Entrada y Salida 
-entradaSalida: ESCRIBIR '(' listaDeExpresiones ')'  
+entradaSalida: ESCRIBIR '(' listaDeExpresiones ')'  {inicializarListaDeExpresiones(); escribir();}
              | LEER '(' listaDeIdentificadores ')'  
 ;
 
 // Listas y Expresiones
-
 listaDeIdentificadores: IDENTIFICADOR ',' listaDeIdentificadores    {asignarValorAIdentificador($1, ingresarValorDeIdentificador($1));}    
                       | IDENTIFICADOR                               {asignarValorAIdentificador($1, ingresarValorDeIdentificador($1));}
 ;
 
-listaDeExpresiones: expresion ',' listaDeExpresiones        {imprimirExpresion($1);}            
-                  | expresion                               {imprimirExpresion($1);}       
+listaDeExpresiones: expresion ',' listaDeExpresiones    {agregarExpresion($1);} 
+                  | expresion                           {imprimirExpresion($1);}       
 ;
 expresion: primaria operadorAditivo expresion   {$$ = reducirExpresion($1, $2, $3);} 
          | primaria                             {$$ = $1;}
@@ -100,8 +99,8 @@ int main(int argc, char *argv[])
 
     switch(yyparse())
     {
-        case 0: printf("El análisis ha finalizado exitosamente.\n"); break;
-        case 1: fprintf(stderr, "Error de análisis sintáctico.\n"); break;
-        case 2: fprintf(stderr, "Error de memoria en yyparse.\n"); break;
+        case 0: printf("\nEl análisis ha finalizado exitosamente.\n"); break;
+        case 1: fprintf(stderr, "\nError de análisis sintáctico.\n"); break;
+        case 2: fprintf(stderr, "\nError de memoria en yyparse.\n"); break;
     }
 }
